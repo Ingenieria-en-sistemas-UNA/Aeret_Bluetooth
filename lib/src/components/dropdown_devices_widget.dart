@@ -15,6 +15,7 @@ class DropdownDevicesWidget extends StatelessWidget {
         stream: bluetoothBloc.bluetoothDeviceStream,
         builder: (context, AsyncSnapshot<BluetoothDevice> snapshot) {
           return DropdownButton(
+            hint: Text('Seleccionar'),
             items: _getDeviceItems(),
             onChanged: (BluetoothDevice value) {
               bluetoothBloc.bluetoothDeviceSink(value);

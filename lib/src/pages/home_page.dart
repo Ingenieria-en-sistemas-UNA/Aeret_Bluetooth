@@ -11,6 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   FlutterBluetoothSerial bluetooth = FlutterBluetoothSerial.instance;
 
   BluetoothBloc _bluetoothBloc;
@@ -42,6 +45,7 @@ class _HomePageState extends State<HomePage> {
     _bluetoothBloc.loadDevices();
 
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Home'),
       ),
@@ -102,18 +106,36 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _connect() async {
-    await _bluetoothBloc.connect();
-    setState(() {
-      _connected = true;
-      _pressed = false;
-    });
+    var isConnected = await _bluetoothBloc.connect();
+    if(isConnected){
+      setState(() {
+        _connected = true;
+        _pressed = false;
+      });
+    } else {
+      showSnackbar('Seleccione un dispositivo');
+    }
   }
 
   void _disconnect() async {
-    await _bluetoothBloc.disconnect();
-    setState(() {
-      _pressed = false;
-      _connected = false;
-    });
+    var isDisconnected = await _bluetoothBloc.disconnect();
+    if(isDisconnected){
+      setState(() {
+        _connected = false;
+        _pressed = false;
+      });
+    } else {
+      showSnackbar('Seleccione un dispositivo');
+    }
   }
+
+  void showSnackbar(String mensaje) {
+    final snackbar = SnackBar(
+      behavior: SnackBarBehavior.fixed,
+      backgroundColor: Colors.redAccent,
+      content: Text(mensaje),
+      duration: Duration(milliseconds: 1500),
+    );
+    scaffoldKey.currentState.showSnackBar(snackbar);
+  } 
 }
