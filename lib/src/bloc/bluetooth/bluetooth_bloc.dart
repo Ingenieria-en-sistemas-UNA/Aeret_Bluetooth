@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
@@ -55,6 +56,8 @@ class BluetoothBloc {
     }
   }
 
+  Stream<Uint8List> get readStream => bluetoothConnection?.input;
+
   Future<bool> connect() async {
     if (bluetoothDevice != null) {
       var connection = await BluetoothConnection.toAddress(bluetoothDevice.address);
@@ -66,6 +69,7 @@ class BluetoothBloc {
 
   Future<bool> disconnect() async {
     if (isConnected) {
+      await this.write('9');
       await bluetoothConnection.finish();
       bluetoothConnectionSink(null);
       bluetoothDeviceSink(null);

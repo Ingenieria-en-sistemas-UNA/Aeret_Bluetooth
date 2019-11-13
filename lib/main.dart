@@ -1,9 +1,9 @@
-import 'package:aeret_bluetooth/src/bloc/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aeret_bluetooth/src/pages/home_page.dart';
+import 'package:aeret_bluetooth/src/bloc/provider.dart';
+import 'package:aeret_bluetooth/src/pages/bluetooth_page.dart';
 
-void main() => runApp(MyApp());
+void main()  => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
@@ -12,8 +12,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Aeret',
-        initialRoute: 'home',
-        routes: {'home': (BuildContext context) => HomePage()},
+        initialRoute: 'bluetooth',
+        routes: {
+          'bluetooth': (BuildContext context) => BluetoothPage(),
+        },
       ),
     );
   }
